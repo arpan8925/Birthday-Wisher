@@ -1,6 +1,7 @@
-##################### Extra Hard Starting Project ######################
 import pandas as pd
 import datetime as dt
+import random
+import os
 
 now = dt.datetime.now()
 current_date = now.date()
@@ -12,23 +13,24 @@ current_day = current_date.day
 
 birthday_dates = pd.read_csv("birthdays.csv")
 
+def check_if_birthday():
+    global birthday_check           
+    birthday_check = birthday_dates[(birthday_dates['month'] == current_month) & (birthday_dates['day'] == current_day)]
+    return birthday_check
 
-birthday_check = birthday_dates[(birthday_dates['month'] == current_month) & (birthday_dates['day'] == current_day)]
+while check_if_birthday == True:
+    if not birthday_check.empty:
+        for index, row in birthday_check.iterrows():
+            random_file = random.choice(os.listdir("letter_templates"))
+            with open(f"letter_templates/{random_file}", "r") as letter:
+                letter_text = letter.read()
 
-if not birthday_check.empty:
-    for index, row in birthday_check.iterrows():
-        print(f"Ajke {row['name']} er birthday")
-
-else:
-    print("Karo Birthday nai ajke")
+        birthday_wish = letter_text.replace("[NAME]", row['name'])
+        print(birthday_wish)
 
 
-# 2. Check if today matches a birthday in the birthdays.csv
-
-# 3. If step 2 is true, pick a random letter from letter templates and replace the [NAME] with the person's actual name from birthdays.csv
 
 # 4. Send the letter generated in step 3 to that person's email address.
-
 
 
 
